@@ -9,7 +9,7 @@ pygame.init()
 pygame.display.set_caption('mak gam')
 screen_width=600
 screen_height=400
-
+global WINDOW_SIZE
 WINDOW_SIZE = (600,400)
 
 screen = pygame.display.set_mode(WINDOW_SIZE,0,32) 
@@ -109,7 +109,9 @@ def mainmenu():
     
     menu=True
     selected="start"
- 
+    
+    pygame.mixer.music.load('C:/Users/user/Documents/PyGameFolder/music/music.mp3')
+    pygame.mixer.music.play(-1)
     while menu:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
@@ -148,7 +150,9 @@ def mainmenu():
         title1_rect=title1.get_rect()
         start_rect=text_start.get_rect()
         quit_rect=text_quit.get_rect()
- 
+
+
+
         screen.blit(title0, (screen_width/2 - (title0_rect[2]/2), 50))
         screen.blit(title, (screen_width/2 - (title_rect[2]/2), 80))
         screen.blit(title1, (screen_width/2 - (title1_rect[2]/2), 100))
@@ -160,6 +164,8 @@ def mainmenu():
 
 def choosecharc():
     
+    pygame.mixer.music.load('C:/Users/user/Documents/PyGameFolder/music/lull.mp3')
+    pygame.mixer.music.play(-1)
     menu=True
     selected="start"
     mage_img = pygame.image.load('C:/Users/user/Documents/PyGameFolder/mage.png').convert()
@@ -209,6 +215,8 @@ def choosecharc():
         pygame.display.set_caption("mak gam")
 
 def game(a):
+    pygame.mixer.music.load('C:/Users/user/Documents/PyGameFolder/music/pop.mp3')
+    pygame.mixer.music.play(-1)
     if a == 1:
         animation_database = {}
         animation_database['run'] = load_animation('C:/Users/user/Documents/PyGameFolder/pewpewanimation/run',[7,7])
@@ -244,8 +252,7 @@ def game(a):
     grass_sounds[0].set_volume(0.2)
     grass_sounds[1].set_volume(0.2)
 
-    pygame.mixer.music.load('C:/Users/user/Documents/PyGameFolder/music.mp3')
-    pygame.mixer.music.play(-1)
+
 
     player_action = 'idle'
     player_frame = 0
@@ -360,6 +367,8 @@ def game(a):
                     mainmenu()
                 if event.key == K_LSHIFT:
                     sprint = True
+                if event.key == K_e:
+                    inventory()
             if event.type == KEYUP:
                 if event.key == K_DOWN or event.key == K_s:
                     move_down = False
@@ -375,7 +384,24 @@ def game(a):
         clock.tick(60)
 
 def inventory():
-    pass
+    global WINDOW_SIZE
+    wh = (85,62,54,100)
+    screen = pygame.display.set_mode(WINDOW_SIZE)
+    screen_rect = screen.get_rect()
+    see_through = pygame.Surface(WINDOW_SIZE).convert_alpha()
+    see_through.fill(wh)
+    see_through_rect = see_through.get_rect(bottomleft=screen_rect.center)
+    inventory_img = pygame.image.load('C:/Users/user/Documents/PyGameFolder/inventory.png').convert()
+    inventory_img.set_colorkey((255,255,255))
+    title = text_format("Inventory",font,50,(81,51,59))
+    title_rect = title.get_rect()
+    screen.blit(see_through, see_through_rect)
+    screen.blit(title_rect,see_through_rect)
+    screen.blit(inventory_img,see_through_rect)
+    for event in pygame.event.get(): 
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE or event.key == K_e:
+                    game()
 
 
 
