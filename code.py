@@ -163,7 +163,8 @@ def mainmenu():
         pygame.display.set_caption("mak gam")
 
 def choosecharc():
-    
+    global num 
+    num = 1
     pygame.mixer.music.load('C:/Users/user/Documents/PyGameFolder/music/lull.mp3')
     pygame.mixer.music.play(-1)
     menu=True
@@ -184,12 +185,14 @@ def choosecharc():
                     selected="quit"
                 if event.key==pygame.K_RETURN:
                     if selected=="start":
-                        game(1)
+                        num = 1
+                        game(num)
                     if selected=="quit":
-                        game(2)
+                        num = 2
+                        game(num)
                 if event.key==pygame.K_ESCAPE:
                     mainmenu()
- 
+
 
         screen.fill((52,62,67))
         title0=text_format("CHOOSE CHARACTER", font, 25, (153,166,195))
@@ -213,6 +216,29 @@ def choosecharc():
         pygame.display.update()
         clock.tick(60)
         pygame.display.set_caption("mak gam")
+
+def inventory():
+    global WINDOW_SIZE, num
+    screen = pygame.display.set_mode(WINDOW_SIZE)
+    screen.fill((52,62,67))
+    inventory_img = pygame.image.load('C:/Users/user/Documents/PyGameFolder/inventory.png').convert()
+    inventory_img.set_colorkey((255,255,255))
+    inventory_rect = inventory_img.get_rect()
+    title = text_format("Inventory",font,50,(81,51,59))
+    title_rect = title.get_rect()
+    while True:
+        screen.blit(inventory_img, (screen_width/2 - (inventory_rect[2]/2), 200))
+        screen.blit(title, (screen_width/2 - (title_rect[2]/2), 50))
+        for event in pygame.event.get(): 
+                if event.type == KEYUP:
+                    if event.key == K_ESCAPE or event.key == K_e:
+                        game(num)
+                    else:
+                        inventory()
+
+        pygame.display.update()
+        clock.tick(60)
+
 
 def game(a):
     pygame.mixer.music.load('C:/Users/user/Documents/PyGameFolder/music/pop.mp3')
@@ -382,29 +408,6 @@ def game(a):
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
         pygame.display.update()
         clock.tick(60)
-
-def inventory():
-    global WINDOW_SIZE
-    wh = (85,62,54,100)
-    screen = pygame.display.set_mode(WINDOW_SIZE)
-    screen_rect = screen.get_rect()
-    see_through = pygame.Surface(WINDOW_SIZE).convert_alpha()
-    see_through.fill(wh)
-    see_through_rect = see_through.get_rect(bottomleft=screen_rect.center)
-    inventory_img = pygame.image.load('C:/Users/user/Documents/PyGameFolder/inventory.png').convert()
-    inventory_img.set_colorkey((255,255,255))
-    title = text_format("Inventory",font,50,(81,51,59))
-    title_rect = title.get_rect()
-    screen.blit(see_through, see_through_rect)
-    screen.blit(title_rect,see_through_rect)
-    screen.blit(inventory_img,see_through_rect)
-    for event in pygame.event.get(): 
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE or event.key == K_e:
-                    game()
-
-
-
 
 if __name__ == "__main__":
     mainmenu()
