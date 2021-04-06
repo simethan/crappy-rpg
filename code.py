@@ -25,6 +25,15 @@ green=(0, 255, 0)
 blue=(0, 0, 255)
 yellow=(255, 255, 0)
 
+#Inventory
+global inventory_size
+inventory_size = [
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0]
+    ]
+
 def generate_chunk(x,y):
     chunk_data = []
     for y_pos in range(CHUNK_SIZE):
@@ -218,19 +227,20 @@ def choosecharc():
         pygame.display.set_caption("mak gam")
 
 def inventory():
-    global WINDOW_SIZE, num
+    global WINDOW_SIZE, num, inventory_size
     screen = pygame.display.set_mode(WINDOW_SIZE)
     screen.fill((52,62,67))
     inventory_img = pygame.image.load('C:/Users/user/Documents/PyGameFolder/inventory.png').convert()
     inventory_img.set_colorkey((255,255,255))
-    inventory_rect = inventory_img.get_rect()
+    biginventory_img = pygame.transform.smoothscale(inventory_img,(int(screen_width),int((screen_height/2))))
+    inventory_rect = biginventory_img.get_rect()
     title = text_format("Inventory",font,50,(81,51,59))
     title_rect = title.get_rect()
     while True:
-        screen.blit(inventory_img, (screen_width/2 - (inventory_rect[2]/2), 200))
+        screen.blit(biginventory_img, (screen_width/2 - (inventory_rect[2]/2), 130))
         screen.blit(title, (screen_width/2 - (title_rect[2]/2), 50))
         for event in pygame.event.get(): 
-                if event.type == KEYUP:
+                if event.type == KEYDOWN:
                     if event.key == K_ESCAPE or event.key == K_e:
                         game(num)
                     else:
@@ -408,6 +418,8 @@ def game(a):
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
         pygame.display.update()
         clock.tick(60)
+
+
 
 if __name__ == "__main__":
     mainmenu()
